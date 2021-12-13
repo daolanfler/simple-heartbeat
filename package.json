@@ -1,14 +1,12 @@
 {
-  "name": "typescript-boilerplate-2021",
-  "version": "0.4.2",
-  "description": "Boilerplate for TypeScript projects (Node.js and browser modules)",
-  "author": "Chris Hager <chris@linuxuser.at>",
-  "repository": "https://github.com/metachris/typescript-boilerplate",
+  "name": "simple-heartbeat",
+  "version": "0.0.1",
+  "description": "simple heartbeat manager",
+  "author": "daolanfler <daolanfler@gmail.at>",
+  "repository": "https://github.com/daolanfler/simple-heartbeat.git",
   "license": "MIT",
   "keywords": [
-    "typescript",
-    "boilerplate",
-    "esbuild"
+    "heartbeat"
   ],
   "main": "./dist/tsc/main.js",
   "types": "./dist/tsc/main.d.ts",
