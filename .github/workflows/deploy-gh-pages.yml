@@ -11,7 +11,7 @@ on:
     #  - v*
     branches:
       - master
-      
+
   workflow_dispatch:
 
 jobs:
@@ -29,7 +29,7 @@ jobs:
 
     - run: touch docs/.nojekyll
     - name: Deploy docs 🚀
-      uses: JamesIves/github-pages-deploy-action@releases/v4.1.7
+      uses: JamesIves/github-pages-deploy-action@4.1.7
       with:
         BRANCH: gh-pages # The branch the action should deploy to.
         FOLDER: docs # The folder the action should deploy.
