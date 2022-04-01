@@ -1,8 +1,8 @@
 {
   "name": "simple-heartbeat",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "simple heartbeat manager",
-  "author": "daolanfler <daolanfler@gmail.at>",
+  "author": "daolanfler <daolanfler@gmail.com>",
   "repository": "https://github.com/daolanfler/simple-heartbeat.git",
   "license": "MIT",
   "keywords": [
@@ -15,6 +15,7 @@
     "my-cli-tool": "./dist/esbuild/cli.js"
   },
   "scripts": {
+    "prepublishOnly": "npm run build",
     "cli": "ts-node src/cli.ts",
     "lint": "eslint src/ --ext .js,.jsx,.ts,.tsx",
     "test": "jest",
