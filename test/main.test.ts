@@ -1,4 +1,4 @@
-import { HeartBeat } from '../src/main';
+import { HeartBeat } from '../src';
 jest.useFakeTimers();
 
 function flushPromises() {

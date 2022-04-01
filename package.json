@@ -1,47 +1,47 @@
 {
   "name": "simple-heartbeat",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "simple heartbeat manager",
   "author": "daolanfler <daolanfler@gmail.com>",
-  "repository": "https://github.com/daolanfler/simple-heartbeat.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/daolanfler/simple-heartbeat.git"
+  },
   "license": "MIT",
   "keywords": [
     "heartbeat"
   ],
-  "main": "./dist/tsc/main.js",
-  "types": "./dist/tsc/main.d.ts",
-  "browser": "./dist/esbuild/browser.js",
-  "bin": {
-    "my-cli-tool": "./dist/esbuild/cli.js"
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
   },
   "scripts": {
     "prepublishOnly": "npm run build",
-    "cli": "ts-node src/cli.ts",
     "lint": "eslint src/ --ext .js,.jsx,.ts,.tsx",
     "test": "jest",
-    "clean": "rm -rf dist build package",
-    "ts-node": "ts-node",
+    "clean": "rimraf dist build package",
     "docs": "typedoc --entryPoints src/main.ts",
-    "build": "tsc -p tsconfig.json",
-    "build-all": "yarn clean && yarn build && yarn esbuild-node && yarn esbuild-browser",
-    "esbuild-browser": "esbuild src/browser.ts --bundle --minify --sourcemap=external --outfile=dist/esbuild/browser.js",
-    "esbuild-browser:dev": "esbuild src/browser.ts --bundle --outfile=dist/esbuild/browser.js",
-    "esbuild-browser:watch": "esbuild src/browser.ts --bundle --watch --outfile=dist/esbuild/browser.js",
-    "esbuild-node": "esbuild src/cli.ts --bundle --platform=node --minify --sourcemap=external --outfile=dist/esbuild/cli.js",
-    "esbuild-node:dev": "esbuild src/cli.ts --bundle --platform=node --sourcemap=external --outfile=dist/esbuild/cli.js",
-    "esbuild-node:watch": "esbuild src/cli.ts --bundle --platform=node --watch --sourcemap=external --outfile=dist/esbuild/cli.js"
+    "build": "rimraf dist && unbuild",
+    "dev": "unbuild --stub",
+    "start": "esno ./src/index.ts"
   },
   "devDependencies": {
     "@types/jest": "^27.4.1",
     "@types/node": "^15.0.1",
     "@typescript-eslint/eslint-plugin": "^4.19.0",
     "@typescript-eslint/parser": "^4.19.0",
-    "esbuild": "^0.11.11",
     "eslint": "^7.22.0",
     "jest": "^27.5.1",
+    "rimraf": "^3.0.2",
     "ts-jest": "^27.1.4",
-    "ts-node": "^9.1.1",
     "typedoc": "^0.22.10",
-    "typescript": "^4.2.3"
+    "typescript": "^4.6.3",
+    "unbuild": "^0.7.2"
   }
 }
