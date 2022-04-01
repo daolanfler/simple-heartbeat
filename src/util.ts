@@ -17,7 +17,7 @@ export function poll(
         if (isRunning) {
           resolve(cb(cancel));
         }
-      }, timeout || interval);
+      }, timeout ?? interval);
     });
   };
 

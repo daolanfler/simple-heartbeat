@@ -53,7 +53,7 @@ export class HeartBeat {
 
   startTimer(task: TaskConfig): CancelTimerObj {
     const cancel = poll(task.handler, task.interval, {
-      immediate: false,
+      immediate: task.immediate,
     });
     task.running = true;
     const obj = {
