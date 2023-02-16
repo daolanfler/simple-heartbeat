@@ -22,7 +22,7 @@ describe("pollManager", () => {
     const cb = vi.fn();
     pollManager.addTask("task 1", cb, 2000, { immediate: false });
     vi.advanceTimersByTime(0);
-    await flushPromises()
+    await flushPromises();
 
     expect(cb).not.toBeCalled();
 
@@ -96,5 +96,64 @@ describe("pollManager", () => {
 
     vi.advanceTimersByTime(2000);
     expect(cb).toHaveBeenCalledTimes(1);
+  });
+
+  test("stop/start all works", async () => {
+    const pollManager = new HeartBeat();
+    const cb = vi.fn();
+    const cb2 = vi.fn();
+    pollManager.addTask("task 1", cb, 1000);
+    pollManager.addTask("task 2", cb2, 2000);
+
+    for (let i = 0; i < 8; i++) {
+      vi.advanceTimersByTime(1000);
+      // 同理
+      await flushPromises();
+    }
+    expect(cb).toHaveBeenCalledTimes(8);
+    expect(cb2).toHaveBeenCalledTimes(4);
+
+    pollManager.stopAll(false);
+    expect(pollManager.getTaskCount()).toBe(2);
+
+    pollManager.startAll();
+
+    for (let i = 0; i < 8; i++) {
+      vi.advanceTimersByTime(1000);
+      await flushPromises();
+    }
+    expect(cb).toHaveBeenCalledTimes(16);
+    expect(cb2).toHaveBeenCalledTimes(8);
+
+    pollManager.stopAll();
+    expect(pollManager.getTaskCount()).toBe(0);
+  });
+
+  it("should omit task whose name already exists", () => {
+    const pollManager = new HeartBeat();
+    const cb = vi.fn();
+    pollManager.addTask("task 1", cb, 1000);
+    pollManager.addTask("task 1", cb, 1000);
+
+    vi.advanceTimersByTime(1000);
+    expect(cb).toHaveBeenCalledOnce();
+  });
+
+  test("restart should working", () => {
+    const pollManager = new HeartBeat();
+    const cb = vi.fn();
+    const cb2 = vi.fn();
+    pollManager.addTask("task 1", cb, 1000);
+    pollManager.addTask("task 2", cb2, 2000);
+    vi.advanceTimersByTime(1600);
+
+    expect(cb).toHaveBeenCalledTimes(1);
+    expect(cb2).toHaveBeenCalledTimes(0);
+
+    pollManager.restart();
+
+    vi.advanceTimersByTime(2000);
+    expect(cb).toHaveBeenCalledTimes(2);
+    expect(cb2).toHaveBeenCalledTimes(1);
   });
 });

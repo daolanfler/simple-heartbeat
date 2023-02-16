@@ -73,18 +73,20 @@ export class HeartBeat {
     if (!name) return;
     const task = this._tasks.find((item) => item.name === name);
     if (!task) {
+      // test can't reach
       console.warn("no such task ");
       return;
     }
     if (task.running) {
+      // test can't reach
       console.warn("task is already running: ", name);
     } else {
       this._cancelTimer.push(this.startTimer(task));
     }
   }
 
-  restart(): void {
-    this.stopAll();
+  restart(clear = false): void {
+    this.stopAll(clear);
     this.startAll();
   }
 
@@ -130,6 +132,10 @@ export class HeartBeat {
   resetTaskList(): void {
     this._tasks = [];
     this._cancelTimer = [];
+  }
+
+  getTaskCount(): number {
+    return this._tasks.length;
   }
 }
 

@@ -9,7 +9,7 @@ export function poll(
   { immediate = true } = {}
 ): CancelFn {
   let isRunning = true;
-  let timerId: number | NodeJS.Timeout;
+  let timerId: number;
 
   const exec = (timeout?: number) => {
     return new Promise((resolve) => {
