@@ -19,7 +19,6 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "outDir": "./dist/tsc/",
-    "types": ["node", "jest"],
     "lib": ["ES6", "DOM"]
   },
   "include": ["src/**/*.ts", "test/main.test.ts"],

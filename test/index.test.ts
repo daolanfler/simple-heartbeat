@@ -1,52 +1,61 @@
+import { describe, expect, it, vi } from "vitest";
 import { HeartBeat } from "../src";
-jest.useFakeTimers();
+import { test } from "vitest";
+import { beforeEach } from "vitest";
+import { afterEach } from "vitest";
 
-function flushPromises() {
-  // return Promise.resolve();
-  // return new Promise(resolve => setImmediate(resolve));
-  return new Promise((resolve) =>
-    jest.requireActual("timers").setImmediate(resolve)
-  );
+function flushPromises(): Promise<void> {
+  return Promise.resolve();
 }
 
 describe("pollManager", () => {
-  it("should poll after interval if set immediate false", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("should poll after interval if set immediate false", async () => {
     const pollManager = new HeartBeat();
-    const callback = jest.fn();
-    pollManager.addTask("task 1", callback, 2000, { immediate: false });
+    const cb = vi.fn();
+    pollManager.addTask("task 1", cb, 2000, { immediate: false });
+    vi.advanceTimersByTime(0);
+    await flushPromises()
 
-    expect(callback).not.toBeCalled();
+    expect(cb).not.toBeCalled();
 
-    jest.advanceTimersByTime(2000);
+    vi.advanceTimersByTime(2000);
 
-    expect(callback).toHaveBeenCalledTimes(1);
+    expect(cb).toHaveBeenCalledTimes(1);
   });
 
   it("should poll immediately if set immediate true", async () => {
     const pollManager = new HeartBeat();
-    const callback = jest.fn();
-    pollManager.addTask("task 1", callback, 1000, { immediate: true });
+    const cb = vi.fn();
+    pollManager.addTask("task 1", cb, 1000, { immediate: true });
     // https://stackoverflow.com/a/52196951/8947428
-    // when jest.advanceTimerByTime called, a loop will run synchronously calling any callbacks that would
-    // have been scheduled in the ellpased time, including any (callbacks of setTimeout) that get added while running the callbacks.
-    // But those callbacks may cause jobs to be queued in `micro-tasks`
+    // when vi.advanceTimerByTime called, a loop will run synchronously calling any cbs that would
+    // have been scheduled in the ellpased time, including any (cbs of setTimeout) that get added while running the callbacks.
+    // But those cbs may cause jobs to be queued in `micro-tasks`
     // so after every advanceTimersBytTime, we use `await flushPromises()` to queue the remainder of the test at the end of `micro-task`
     // queue and let everything alreadly in the queue run first
     // Here, we queue one micro-task at 0ms, then every 1000ms. so we need to flush at 0ms, and then every 1000ms
-    jest.advanceTimersByTime(0);
+    vi.advanceTimersByTime(0);
     await flushPromises();
-    expect(callback).toBeCalled();
+    expect(cb).toBeCalled();
 
     for (let i = 0; i < 8; i++) {
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
       await flushPromises();
     }
 
-    expect(callback).toHaveBeenCalledTimes(9);
+    expect(cb).toHaveBeenCalledTimes(9);
   });
 
   test("execution order", async () => {
-    const order = [];
+    const order: string[] = [];
     order.push("1");
     setTimeout(() => order.push("6"), 0);
     const promise = new Promise<void>((resolve) => {
@@ -58,37 +67,34 @@ describe("pollManager", () => {
     order.push("3");
     await promise;
     order.push("5");
-    jest.advanceTimersByTime(0);
+    vi.advanceTimersByTime(0);
     expect(order).toEqual(["1", "2", "3", "4", "5", "6"]);
   });
 
   it("should be able to run multiple tasks", () => {
     const pollManager = new HeartBeat();
-    const callback = jest.fn();
-    pollManager.addTask("task 1", callback, 1000);
-    pollManager.addTask("task 2", callback, 1000);
+    const cb = vi.fn();
+    pollManager.addTask("task 1", cb, 1000);
+    pollManager.addTask("task 2", cb, 1000);
 
-    expect(callback).not.toBeCalled();
+    expect(cb).not.toBeCalled();
 
-    jest.advanceTimersByTime(1000);
+    vi.advanceTimersByTime(1000);
 
-    expect(callback).toHaveBeenCalledTimes(2);
+    expect(cb).toHaveBeenCalledTimes(2);
   });
 
-  it("should be able to stop single tasks", () => {
+  it("should be able to stop single tasks", async () => {
     const pollManager = new HeartBeat();
-    const callback = jest.fn();
-    pollManager.addTask("task 1", callback, 1000);
+    const cb = vi.fn();
+    pollManager.addTask("task 1", cb, 1000);
 
-    expect(callback).not.toBeCalled();
-
-    jest.advanceTimersByTime(1000);
-
-    expect(callback).toHaveBeenCalledTimes(1);
+    vi.advanceTimersByTime(1000);
+    expect(cb).toHaveBeenCalledTimes(1);
 
     pollManager.stop("task 1");
 
-    jest.advanceTimersByTime(2000);
-    expect(callback).toHaveBeenCalledTimes(1);
+    vi.advanceTimersByTime(2000);
+    expect(cb).toHaveBeenCalledTimes(1);
   });
 });
