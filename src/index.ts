@@ -18,7 +18,7 @@ export class HeartBeat {
 
   private _tasks: TaskConfig[] = [];
 
-  checkExisted(taskName: string): boolean{
+  checkExisted(taskName: string): boolean {
     const t = this._tasks.find((item) => item.name === taskName);
     return Boolean(t);
   }
@@ -117,7 +117,7 @@ export class HeartBeat {
     }
   }
 
-  startAll():void {
+  startAll(): void {
     const notStarted = this._tasks.filter((item) => !item.running);
 
     const cancelTimers = notStarted.map((task) => {

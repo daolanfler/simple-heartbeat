@@ -1,5 +1,0 @@
-{
-  "jest.jestCommandLine": "npx jest",
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "eslint.packageManager": "yarn"
-}
