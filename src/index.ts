@@ -1,11 +1,13 @@
 import { poll } from "./util";
 
-interface CancelTimerObj {
+export * from './util'
+
+export interface CancelTimerObj {
   name: string;
   handler: () => void;
 }
 
-interface TaskConfig {
+export interface TaskConfig {
   name: string;
   interval: number;
   running: boolean;
