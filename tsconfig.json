@@ -19,7 +19,7 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "outDir": "./dist",
-    "lib": ["ES6", "DOM"]
+    "lib": ["ES2015", "DOM",],
   },
   "include": ["src/**/*.ts", "test/main.test.ts"],
   "exclude": ["node_modules", "**/*.test.ts"]
