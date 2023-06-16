@@ -48,7 +48,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - run: pnpm docs
+      - run: pnpm run docs
 
       - run: touch docs/.nojekyll
       - name: Deploy docs 🚀

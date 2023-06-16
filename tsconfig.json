@@ -18,7 +18,7 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "sourceMap": true,
-    "outDir": "./dist/tsc/",
+    "outDir": "./dist",
     "lib": ["ES6", "DOM"]
   },
   "include": ["src/**/*.ts", "test/main.test.ts"],
