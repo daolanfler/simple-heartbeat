@@ -1,6 +1,6 @@
 {
   "name": "@daolanfler/simple-heartbeat",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "simple heartbeat manager",
   "author": "daolanfler <daolanfler@gmail.com>",
   "repository": {
@@ -43,5 +43,8 @@
     "unbuild": "^1.1.1",
     "vite": "^4.1.1",
     "vitest": "^0.28.5"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }
